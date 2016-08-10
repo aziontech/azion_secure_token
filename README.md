@@ -21,7 +21,7 @@ Azion Nginx running at the Edge Servers will check for two things:
 Is the current time greater than the expiration time specified in the token?
 Does our signature match the signature of the token?
 
-If the signature is invalid or expired, Nginx will return a 403. It is not possible for a malicious user to modify the expiration time of their token (if they did the signature would no longer match).
+If the signature is invalid, Nginx will return a 403. If the signature is valid but the expiration time has elapsed, Nginx will return a 410. The different response codes are helpful for debugging (and also "more correct"). It is not possible for a malicious user to modify the expiration time of their token (if they did the signature would no longer match).
 
 
 ### Client Side Scripts
