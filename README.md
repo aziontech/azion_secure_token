@@ -5,7 +5,7 @@ Azion Secure Token give you the ability to create URLs that expire. If you want 
 
 ### Real Time Manager
 
-To start using Secure Tokens, go to your Cloud Security > Edge Firewall configuration, define a secret and enable it on your Content Delivery > Rules Engine settings. Documentation is available here:: https://docs.azion.com
+To start using Secure Tokens, go to your Cloud Security > Edge Firewall configuration, define a secret and enable it on your Content Delivery > Rules Engine settings. Documentation is available here: https://www.azion.com.br/developers/documentacao/ 
 
 NOTE: Please generate your own key before using this code. The example key will intentionally cause an error if you use it. Please generate a new key with openssl rand -base64 32.
 
