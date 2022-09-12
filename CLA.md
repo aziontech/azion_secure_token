@@ -7,7 +7,7 @@ to the project.
 
 ### License.
 
-You hereby represent that all present, past and future contributions are governed by the [BSD 3-Clause](LICENSE) License copyright statement.
+You hereby represent that all present, past and future contributions are governed by the [MIT](LICENSE) License copyright statement.
 
 This entails that to the extent possible under applicable law, you transfer all copyright and related or neighboring rights
 of the code or documents you contribute to the project itself or its maintainers.
