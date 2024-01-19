@@ -6,7 +6,7 @@ The creation and validation of signatures for cookies, authentication headers, a
 
 > Read more on the [How to install the Secure Token integration](https://www.azion.com/en/documentation/products/guides/secure-token/) guide.
 
-—
+---
 
 ## Generating the token
 
@@ -33,9 +33,9 @@ print 'http://www.example.org%s?st=%s&e=%s' % (uri, token, expire)
 
 Where:
 
-`secret`: a string of your choice that will be used to generate the token.
-`uri`: the URI to use with the token.
-`expire`: the expiration time of the token.
+- `secret`: a string of your choice that will be used to generate the token.
+- `uri`: the URI to use with the token.
+- `expire`: the expiration time of the token.
 
 Save the generated token, regardless of the way you generated it.
 
@@ -45,7 +45,7 @@ The full request URL would look like this:
 
 `http://www.example.org/my/uri?st=m6WCATfRgS_5lcyChCPgrw&e=1470055000`
 
-—
+---
 
 ## Adding the token via Real-Time Manager
 
@@ -58,7 +58,8 @@ To start using **Secure Token**, you need to get and instantiate the integration
 ```
 
 ​​Where `secure_token_secret` will be the secret string you’ve passed on the code when generating the token in the previous step.
-—
+
+---
 
 ## Azion's platform validation
 
@@ -69,7 +70,7 @@ Does Azion's signature match the signature of the token?
 
 If the signature is invalid, the system will return a `403` error. If the signature is valid but the expiration time has elapsed, the system will return a `410` error. The different response codes help to debug (and are also "more correct"). A malicious user can't modify the expiration time of their token (if they did, the signature would no longer match).
 
-—
+---
 
 ## Client Side Scripts
 
