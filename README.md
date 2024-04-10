@@ -1,32 +1,80 @@
-### Azion Secure Token Authentication
+# Azion Secure Token Authentication
 
-Azion Secure Token give you the ability to create URLs that expire. If you want to give a particular user access to a link for a specific amount of time, you'll need those tokens. You can create tokens with many different variations and use it to create and validade signatures in cookies, authentication headers and others, and they are commonly used to secure video assets, including HLS and Progressive Download, no matter if the content is a live streaming or on-demand.
+Azion **Secure Token** allows you to create token-based, time-limited URLs. This way, you can give a particular user access to a link for a specific amount of time.
 
+The creation and validation of signatures for cookies, authentication headers, and other security measures can be done using these tokens, which can be altered in a variety of ways. Utilizing both HLS and Progressive Download, the solution is frequently used to secure video assets, including those used for live streaming and on-demand content.
 
-### Real Time Manager
+> Read more on the [How to install the Secure Token integration](https://www.azion.com/en/documentation/products/guides/secure-token/) guide.
 
-To start using Secure Tokens, go to your Cloud Security > Edge Firewall configuration, define a secret and enable it on your Content Delivery > Rules Engine settings. Documentation is available here: https://www.azion.com.br/developers/documentacao/ 
+---
 
-NOTE: Please generate your own key before using this code. The example key will intentionally cause an error if you use it. Please generate a new key with openssl rand -base64 32.
+## Generating the token
 
-This code expects to find a token in the `st=` GET parameter and a expire in the `e=` parameter. Tokens take the format of `?st=XXX&e=YYY` and look like this: `?st=m6WCATfRgS_5lcyChCPgrw&e=1470055000`. The full request URL would look like this:
+In this repository, you’ll find two example scripts to generate the tokens, a Python and a PHP script. You can run them locally and generate the token or you can generate these tokens on your own platform with your own code.
 
-Example: `http://www.example.org/my/uri?st=m6WCATfRgS_5lcyChCPgrw&e=1470055000`
+Using the Python script as an example, you’ll have the following source code:
 
+```
+#!/usr/bin/env python
 
-### Azion Edge Servers
+import base64
+import hashlib
 
-Azion Nginx running at the Edge Servers will check for two things:
+secret = 'mysecret'
+uri = '/my/uri'
+expire = '1470055000'
+
+md5 = hashlib.md5()
+md5.update(secret + uri + expire)
+token = base64.b64encode(md5.digest()).replace('=','').replace('+','-').replace('/','_')
+
+print 'http://www.example.org%s?st=%s&e=%s' % (uri, token, expire)
+```
+
+Where:
+
+- `secret`: a string of your choice that will be used to generate the token.
+- `uri`: the URI to use with the token.
+- `expire`: the expiration time of the token.
+
+Save the generated token, regardless of the way you generated it.
+
+In this case, the edge function expects to find a token in the `st= GET` parameter and an expiration time in the`e=` parameter. Tokens are query strings in the format `?st=XXX&e=YYY. For example: `?st=m6WCATfRgS_5lcyChCPgrw&e=1470055000`.
+
+The full request URL would look like this:
+
+`http://www.example.org/my/uri?st=m6WCATfRgS_5lcyChCPgrw&e=1470055000`
+
+---
+
+## Adding the token via Real-Time Manager
+
+To start using **Secure Token**, you need to get and instantiate the integration's function as explained in the [how-to guide](https://www.azion.com/en/documentation/products/guides/secure-token/). While [setting up the integration](https://www.azion.com/en/documentation/products/guides/secure-token/#setting-up-the-integration), you'll need to add the token in the **Args** tab: 
+
+```
+{
+    "secure_token_secret": "thatisthesecret"
+}
+```
+
+​​Where `secure_token_secret` will be the secret string you’ve passed on the code when generating the token in the previous step.
+
+---
+
+## Azion's platform validation
+
+Azion's platform will check for two conditions:
 
 Is the current time greater than the expiration time specified in the token?
-Does our signature match the signature of the token?
+Does Azion's signature match the signature of the token?
 
-If the signature is invalid, Nginx will return a 403. If the signature is valid but the expiration time has elapsed, Nginx will return a 410. The different response codes are helpful for debugging (and also "more correct"). It is not possible for a malicious user to modify the expiration time of their token (if they did the signature would no longer match).
+If the signature is invalid, the system will return a `403` error. If the signature is valid but the expiration time has elapsed, the system will return a `410` error. The different response codes help to debug (and are also "more correct"). A malicious user can't modify the expiration time of their token (if they did, the signature would no longer match).
 
+---
 
-### Client Side Scripts
+## Client Side Scripts
 
-The client or web application will need to be able to generate tokens to authenticate with Azion Nginx.
+The client or web application must be able to generate tokens to authenticate with Azion's platform.
 
-You can find pseudo code examples here on github. Feel free to modify them and in case you write your own codes, share them with us :)
+You can find pseudo-code examples here on GitHub. Feel free to modify them and, in case you write your own codes, share them with Azion's team.
 
